@@ -5,7 +5,9 @@
 #include <jni.h>
 #include <string>
 #include <sstream>
-#include "./include/timer.h"
+#include "matrix/matrix-common.h"
+#include "base/timer.h"
+#include "matrix/sparse-matrix.h"
 
 extern "C" {
 /*
@@ -23,6 +25,10 @@ JNIEXPORT jstring JNICALL Java_com_rayworks_sample_kaldidroiddemo_kaldi_KaldiWra
     std::stringstream ss;
     ss << hello << " interval:" << interval;
     std::string str = ss.str();
+
+    // error: undefined reference to 'kaldi::Matrix<float>::Destroy()
+//    auto * gm =  new kaldi::GeneralMatrix();
+
     return env->NewStringUTF(str.c_str());
 }
 

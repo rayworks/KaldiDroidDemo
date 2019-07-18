@@ -19,8 +19,8 @@
 #ifndef KALDI_BASE_TIMER_H_
 #define KALDI_BASE_TIMER_H_
 
-//#include "base/kaldi-utils.h"
-//#include "base/kaldi-error.h"
+#include "base/kaldi-utils.h"
+#include "base/kaldi-error.h"
 
 
 #if defined(_MSC_VER) || defined(MINGW)

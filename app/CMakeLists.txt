@@ -19,7 +19,15 @@ add_library( # Sets the name of the library.
         # Provides a relative path to your source file(s).
         src/main/cpp/Timer.cpp)
 
-include_directories(openssl-armeabi-v7a/include/)
+add_library(kaldi-matrix SHARED IMPORTED) # or STATIC
+set_target_properties(kaldi-matrix PROPERTIES
+        IMPORTED_LOCATION "${CMAKE_SOURCE_DIR}/jniLibs/armeabi-v7a/libkaldi-matrix.so"
+        INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_SOURCE_DIR}/src/cpp/matrix"
+        )
+
+include_directories(src/main/cpp/)
+
+link_directories(${CMAKE_CURRENT_SOURCE_DIR}/jniLibs/armeabi-v7a)
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because CMake includes system libraries in the search path by
@@ -27,14 +35,13 @@ include_directories(openssl-armeabi-v7a/include/)
 # you want to add. CMake verifies that the library exists before
 # completing its build.
 
-find_library(
+find_library( # Sets the name of the path variable.
+        log-lib
+
         # Specifies the name of the NDK library that
         # you want CMake to locate.
-        log
+        log)
 
-        c++_shared
-
-        kaldi-base)
 
 # Specifies libraries CMake should link to your target library. You
 # can link multiple libraries, such as libraries you define in this
@@ -42,8 +49,15 @@ find_library(
 
 target_link_libraries( # Specifies the target library.
         native-lib
-        #${CMAKE_CURRENT_SOURCE_DIR}/openssl-armeabi-v7a/lib/libssl.a
         ${CMAKE_CURRENT_SOURCE_DIR}/jniLibs/armeabi-v7a/libkaldi-base.so
+        ${kaldi-matrix}
+
+        #        ${CMAKE_CURRENT_SOURCE_DIR}/jniLibs/armeabi-v7a/libkaldi-matrix.so
+        #        ${CMAKE_CURRENT_SOURCE_DIR}/jniLibs/armeabi-v7a/libkaldi-util.so
+
+        #        -L${CMAKE_CURRENT_SOURCE_DIR}/jniLibs/armeabi-v7a/
+
         # Links the target library to the log library
         # included in the NDK.
-        log)
+        ${log-lib}
+        )
