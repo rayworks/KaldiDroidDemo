@@ -5,9 +5,10 @@
 #include <jni.h>
 #include <string>
 #include <sstream>
-#include "matrix/matrix-common.h"
+#include <android/log.h>
 #include "base/timer.h"
 #include "matrix/sparse-matrix.h"
+#include "matrix/compressed-matrix.h"
 
 extern "C" {
 /*
@@ -26,8 +27,9 @@ JNIEXPORT jstring JNICALL Java_com_rayworks_sample_kaldidroiddemo_kaldi_KaldiWra
     ss << hello << " interval:" << interval;
     std::string str = ss.str();
 
-    // error: undefined reference to 'kaldi::Matrix<float>::Destroy()
-//    auto * gm =  new kaldi::GeneralMatrix();
+    __android_log_print(ANDROID_LOG_INFO, "Timer", ">>> msg : %s", str.c_str());
+
+    kaldi::CompressedMatrix cm = kaldi::CompressedMatrix();
 
     return env->NewStringUTF(str.c_str());
 }

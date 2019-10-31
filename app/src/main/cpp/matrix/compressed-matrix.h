@@ -92,7 +92,7 @@ class CompressedMatrix {
  public:
   CompressedMatrix(): data_(NULL) { }
 
-  ~CompressedMatrix() { Clear(); }
+  ~CompressedMatrix() { /*Clear();*/ }
 
   template<typename Real>
   explicit CompressedMatrix(const MatrixBase<Real> &mat,

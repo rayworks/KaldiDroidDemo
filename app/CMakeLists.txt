@@ -19,10 +19,22 @@ add_library( # Sets the name of the library.
         # Provides a relative path to your source file(s).
         src/main/cpp/Timer.cpp)
 
+add_library(kaldi-util SHARED IMPORTED)
+set_target_properties(kaldi-util PROPERTIES
+        IMPORTED_LOCATION "${CMAKE_SOURCE_DIR}/jniLibs/armeabi-v7a/libkaldi-util.so"
+        INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_SOURCE_DIR}/src/cpp/util"
+        )
+
 add_library(kaldi-matrix SHARED IMPORTED) # or STATIC
 set_target_properties(kaldi-matrix PROPERTIES
         IMPORTED_LOCATION "${CMAKE_SOURCE_DIR}/jniLibs/armeabi-v7a/libkaldi-matrix.so"
         INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_SOURCE_DIR}/src/cpp/matrix"
+        )
+
+add_library(kaldi-base SHARED IMPORTED)
+set_target_properties(kaldi-base PROPERTIES
+        IMPORTED_LOCATION "${CMAKE_SOURCE_DIR}/jniLibs/armeabi-v7a/libkaldi-base.so"
+        INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_SOURCE_DIR}/src/cpp/base"
         )
 
 include_directories(src/main/cpp/)
@@ -49,13 +61,10 @@ find_library( # Sets the name of the path variable.
 
 target_link_libraries( # Specifies the target library.
         native-lib
-        ${CMAKE_CURRENT_SOURCE_DIR}/jniLibs/armeabi-v7a/libkaldi-base.so
+
+        ${kaldi-util}
         ${kaldi-matrix}
-
-        #        ${CMAKE_CURRENT_SOURCE_DIR}/jniLibs/armeabi-v7a/libkaldi-matrix.so
-        #        ${CMAKE_CURRENT_SOURCE_DIR}/jniLibs/armeabi-v7a/libkaldi-util.so
-
-        #        -L${CMAKE_CURRENT_SOURCE_DIR}/jniLibs/armeabi-v7a/
+        ${kaldi-base}
 
         # Links the target library to the log library
         # included in the NDK.
